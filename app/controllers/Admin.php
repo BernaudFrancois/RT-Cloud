@@ -2,13 +2,13 @@
 use micro\orm\DAO;
 class Admin extends \BaseController {
 
-	private function isAdmin() {
-		if(Auth::isAuth()) {
-			if(Auth::isAdmin()) {
+	private function isAdmin() { //fonction privée
+		if(Auth::isAuth()) { // test connexion
+			if(Auth::isAdmin()) { // test de pouvoir admin
 				return true;
 			}
 		}
-		$msg = new DisplayedMessage();
+		$msg = new DisplayedMessage(); // si false
 		$msg->setContent('Accès à une ressource non autorisée')
 				->setType('danger')
 				->setDismissable(false)
@@ -17,7 +17,7 @@ class Admin extends \BaseController {
 	}
 
 	public function index() {
-		if(!$this->isAdmin())
+		if(!$this->isAdmin()) // appel de la fonction
 			return false;
 
 		$count = (object)[];

@@ -94,10 +94,10 @@ class MyDisques extends BaseController{
 	}
 
 	public function rename() {
-		$valid_input = ['diskId', 'userId', 'name'];
+		$valid_input = ['diskId', 'userId', 'name']; // tableau des inputs du formulaire ( ne provenant pas directement du formulaire)
 		if(!empty($_POST)) {
 			foreach($_POST as $input => $v) {
-				if(!in_array($input, $valid_input)) {
+				if(!in_array($input, $valid_input)) { // si un input ne correspond pas a un champ de valid_input => retourne une erreur
 					echo '<div class="alert alert-danger">Une erreur est survenue, veuillez réessayer ultérieurement</div>';
 					echo '<a href="MyDisques/index" class="btn btn-primary btn-block">Revenir aux disques</a>';
 					return false;
@@ -105,18 +105,18 @@ class MyDisques extends BaseController{
 			}
 
 			$user = Auth::getUser();
-			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId'] .'&& idUtilisateur = '. $_POST['userId']);
-			$oldname = $disk->getNom();
-			$disk->setNom($_POST['name']);
+			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId'] .'&& idUtilisateur = '. $_POST['userId']); // on récupère le disque de l'utilisateur
+				$oldname = $disk->getNom();	//on stock son ancien nom																//	a partir de l'id du disque et du user
+			$disk->setNom($_POST['name']); // on lui affecte son nouveau nom
 
-			$path = $GLOBALS['config']['cloud']['root'] . $GLOBALS['config']['cloud']['prefix'] . $user->getLogin() . '/';
-			$req = rename($path . $oldname, $path . $_POST['name']);
+			$path = $GLOBALS['config']['cloud']['root'] . $GLOBALS['config']['cloud']['prefix'] . $user->getLogin() . '/'; //chemin du dossier
+			$req = rename($path . $oldname, $path . $_POST['name']); //renommage de l'ancien dossier pour le nouveau
 
-			if(DAO::update($disk) && $req) {
-				$this->forward('Scan', 'show', $_POST['diskId']);
-				return false;
+			if(DAO::update($disk) && $req) { //mise a jour dans la base de donnée
+				$this->forward('Scan', 'show', $_POST['diskId']); // si a fonctionné
+				return false;									// envoie vers la vue pour afficher le disque
 			}
-			else
+			else // si n'a pas fonctionné
 				echo '<div class="alert alert-danger">Une erreur est survenue, veuillez rééssayer ultérieurement</div>';
 		}
 	}

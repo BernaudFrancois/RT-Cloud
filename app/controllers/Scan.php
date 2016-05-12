@@ -21,26 +21,26 @@ class Scan extends BaseController {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function show($idDisque, $option = false) {
+	public function show($idDisque, $option = false) { // $option sera utilisé pour des fonctions de type rename & changeTarif
 		if (Auth::isAuth()) { //verifie user connecté
 			$user = Auth::getUser(); // Recupération du user (objet)
 			$disk = DAO::getOne('disque', 'id ='. $idDisque .'&& idUtilisateur = '. $user->getId());
 			//Recuperation du disque de l'id envoyé par le bouton
 			
-			if($option) {
-				switch($option) {
+			if($option) { //vérification de la présence d'une option
+				switch($option) { // selectionne le cas qui correspond au parametre
 					case 'rename':
-						$this->loadView('scan/rename.html', ['disk' => $disk, 'user' => $user]);
-						return false;
+						$this->loadView('scan/rename.html', ['disk' => $disk, 'user' => $user]); //on charge la vue
+						return false; //on stop la fonction
 						break;
 					case 'changeTarif':
-						$tarifs = DAO::getAll('tarif');
-						$selected = $disk->getTarif()->getId();
+						$tarifs = DAO::getAll('tarif'); // récupération de tous les tarifs
+						$selected = $disk->getTarif()->getId(); //affichage du tarif actuel à l'affichage du menu déroulant
 						$this->loadView('scan/changeTarif.html', ['disk' => $disk, 'user' => $user, 'tarifs' => $tarifs, 'selected' => $selected]);
-						return false;
+						return false; //on stop la fonction
 						break;
 					default:
-						echo '<div class="alert alert-danger">Paramètre inconnu</div>';
+						echo '<div class="alert alert-danger">Paramètre inconnu</div>'; // si une option inconnue par le switch est saisie ( ne devrait pas se produire)
 						return false;
 						break;
 				}
@@ -113,36 +113,36 @@ class Scan extends BaseController {
 	}
 
 	public function changeTarif() {
-		$valid_input = ['diskId', 'userId', 'tarif'];
+		$valid_input = ['diskId', 'userId', 'tarif']; // tableau des inputs du formulaire ( ne provenant pas directement du formulaire)
 		if(!empty($_POST)) {
 			foreach ($_POST as $input => $v) {
-				if (!in_array($input, $valid_input)) {
+				if (!in_array($input, $valid_input)) { // si un input ne correspond pas a un champ de valid_input => retourne une erreur
 					echo '<div class="alert alert-danger">Une erreur est survenue, veuillez réessayer ultérieurement</div>';
 					echo '<a href="MyDisques/index" class="btn btn-primary btn-block">Revenir aux disques</a>';
 					return false;
 				}
 			}
 
-			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId']);
-			$diskTarif = new DisqueTarif();
-			$diskTarif->setDisque($disk);
+			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId']); //recuperation du disque
+			$diskTarif = new DisqueTarif(); //creation d'une nouvelle instance de disque
+			$diskTarif->setDisque($disk); // on lui attribut le disque récupéré 
 
-			$tarif = DAO::getOne('tarif', 'id = '. $_POST['tarif']);
-			$diskTarif->setTarif($tarif);
+			$tarif = DAO::getOne('tarif', 'id = '. $_POST['tarif']); //on récupère le tarif grâce à  son id
+			$diskTarif->setTarif($tarif); //mise à jour du tarif
 			$diskTarif->setStartDate(date('Y-m-d H:m:s'));
 
-			$actual_size = $disk->getOccupation() / 100 * $disk->getTarif()->getQuota() * ModelUtils::sizeConverter($disk->getTarif()->getUnite());
-			$new_size = $tarif->getQuota() * ModelUtils::sizeConverter($tarif->getUnite());
-			if($actual_size > $new_size) {
+			$actual_size = $disk->getOccupation() / 100 * $disk->getTarif()->getQuota() * ModelUtils::sizeConverter($disk->getTarif()->getUnite()); // récupération de la taille actuel en octet
+			$new_size = $tarif->getQuota() * ModelUtils::sizeConverter($tarif->getUnite()); // récupération de la taille du future tarif
+			if($actual_size > $new_size) { // si la capacité occupé du disque est supérieur au nouveau tarif -> refus
 				echo '<div class="alert alert-danger">Vous ne pouvez réduire l\'offre actuelle puisque votre quota est supérieur au nouveau</div>';
-				echo '<a href="Scan/show/'. $_POST['diskId'] .'" class="btn btn-primary btn-block">Revenir au disque</a>';
+				echo '<a href="Scan/show/'. $_POST['diskId'] .'" class="btn btn-primary btn-block">Revenir au disque</a>'; //lien de retour au disque
 				return false;
 			}
 			else
-				$disk->addTarif($diskTarif);
+				$disk->addTarif($diskTarif); // sinon on applique le nouveau tarif
 
-			if (DAO::update($disk, true)) {
-				$this->forward('Scan', 'show', $_POST['diskId']);
+			if (DAO::update($disk, true)) { // mise a jour de la DB
+				$this->forward('Scan', 'show', $_POST['diskId']); // retour a l'affichage  du disque
 				return false;
 			} else
 				echo '<div class="alert alert-danger">Une erreur est survenue, veuillez rééssayer ultérieurement</div>';
