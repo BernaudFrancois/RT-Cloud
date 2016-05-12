@@ -17,13 +17,21 @@ class MyDisques extends BaseController{
 		if (Auth::isAuth()){ //verifie user connecté
 			$user = Auth::getUser(); // get user name		
 			$userId = $user->getId(); // on recup l'id user
-			$disques = \micro\orm\DAO::getAll('disque', 'idUtilisateur = '. $userId);// on recup les disques du user, tableau d'objet
+			$disques = \micro\orm\DAO::getAll('disque', 'idUtilisateur = '. $userId);
+			//DAO BDD nom de colonne "disque" et en paramtètre idUtilisateur
+			// on recup tous les disques du user, avec un tableau d'objet
+
+			//Parcourir tableau disque par disque 
+			
 			foreach($disques as $disque) {
 				$disque->occupation = DirectoryUtils::formatBytes($disque->getOccupation() / 100 * $disque->getQuota());
+				// Creation attribut occupation , Methode formatBytes avec getOccupation / 100 et getQuota;
 				$disque->occupationTotal = DirectoryUtils::formatBytes($disque->getQuota());
+				// Creation attribut occupationTotal 
 
 				$occupation = $disque->getOccupation();
-
+				
+				//Association d'un etat avec l'occupation d'un disque avec l'attribut progressStyle 
 				if($occupation <= 100 && $occupation > 80)
 					$disque->progressStyle = 'danger';
 
@@ -36,9 +44,11 @@ class MyDisques extends BaseController{
 				if($occupation <= 10 && $occupation > 0)
 					$disque->progressStyle = 'info';
 			}
-
+			
+			//Charge index.html avec des variables d'objet dans un tableau'
 
 			$this->loadView('MyDisques/index.html', array('user' => $user, 'disques' => $disques));
+			//STOP
 		}
 		else {
 			$msg = new DisplayedMessage();

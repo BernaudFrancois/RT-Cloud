@@ -6,6 +6,9 @@
 		  <li role="presentation"><a href="#Upload" aria-controls="Upload" role="tab" data-toggle="tab">Upload</a></li>
 		</ul>
 		<div class="tab-content">
+			<!-- Suite TODO 1.2.
+			On ajoute au code les informations sous forme de liste,
+			on affiche la variable diskname , Création d'un bouton MODIFIER qui servira plus tard -->
 			<div role="tabpanel" class="tab-pane active" id="Home">
 				<div class="panel panel-default">
 					<div class="panel-heading">Caractéristiques du disque</div>
@@ -20,11 +23,14 @@
 						</li>
 						<li class="list-group-item">
 							<strong>Propriétaire</strong>: {{user.getLogin()}}
+							<!-- Affichage de l'attribut de login -->
 						</li>
 						<li class="list-group-item">
 							<h4>Occupation</h4>
 							<p>{{disk.occupation}} ({{disk.getOccupation()}}%) sur {{disk.occupationTotal}}</p>
 							<span class="label label-{{disk.style}}">{{disk.status}}</span>
+							<!-- Comme le TODO 1.1 on affiche les valzurs d'occupation calculer precedemment -->
+							<!-- On ajoute le statut dans le contrôleur -->
 						</li>
 						<li class="list-group-item">
 							<h4>Tarification</h4>
@@ -33,12 +39,14 @@
 								<span class="glyphicon glyphicon-edit"></span>
 								Modifier la tarification...
 							</a>
+							<!-- On affiche la valeur de la variable $tarif -->
 						</li>
 						<li class="list-group-item">
 							<h4>Services</h4>
 							{% for service in disk._services %}
 								<span class="label label-info">{{service.getNom()}}</span>
 							{%endfor%}
+							<!-- Grâce a la boucle for et l'appel de l'attribut , Affichage de chaque service liés au disque -->
 						</li>
 					</ul>
 				</div>
