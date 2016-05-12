@@ -50,34 +50,34 @@ class MyDisques extends BaseController{
 		}
 	}
 
-	public function frm() {
+	public function frm() { //fourni le formulaire apres avoir cliqué  sur créer un disque
 		$this->loadView('MyDisques/create.html');
 	}
 
 	public function update() {
-		if(isset($_POST) && !empty($_POST)) {
-			$error = false;
+		if(isset($_POST) && !empty($_POST)) {//test disponibilité variable post
+			$error = false;// initialisation d'une variable de maintenance
 
-			if(empty($_POST['name'])) {
+			if(empty($_POST['name'])) { // si erreur ...
 				echo '<div class="alert alert-danger">Le nom ne doit pas être vide</div>';
 				$error = true;
 			}
 
-			if(!$error) {
+			if(!$error) { // si pas d'erreur
 				$user = Auth::getUser();
 				$name = htmlspecialchars($_POST['name']);
 
-				$disk = new Disque();
-				$disk->setUtilisateur($user);
+				$disk = new Disque(); //création d'un objet disque
+				$disk->setUtilisateur($user); // avec les attributs suivants
 				$disk->setNom($name);
 
-				if(DAO::insert($disk, true)) {
+				if(DAO::insert($disk, true)) { //on insert l'objet disque avec la méthode du framework
 					$cloud = $GLOBALS['config']['cloud'];
-					$path = $cloud['root'] . $cloud['prefix'] . $user->getLogin() . '/' . $name;
-					mkdir($path);
+					$path = $cloud['root'] . $cloud['prefix'] . $user->getLogin() . '/' . $name; //chemin d'accès
+					mkdir($path); //créer le dossier relatif au disque, physiquement
 
-					$this->forward('Scan', 'show', $disk->getId());
-					return false;
+					$this->forward('Scan', 'show', $disk->getId()); //charge l'affichage du disque via le controlleur scan
+					return false; // stop la fonction
 				}
 			}
 		}
