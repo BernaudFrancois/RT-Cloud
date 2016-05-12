@@ -141,7 +141,7 @@ class Scan extends BaseController {
 			else
 				$disk->addTarif($diskTarif); // sinon on applique le nouveau tarif
 
-			if (DAO::update($disk, true)) { // mise a jour de la DB
+			if (DAO::update($disk, true) === True) { // mise a jour de la DB
 				$this->forward('Scan', 'show', $_POST['diskId']); // retour a l'affichage  du disque
 				return false;
 			} else
