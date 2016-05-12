@@ -50,7 +50,7 @@ class MyDisques extends BaseController{
 			$this->loadView('MyDisques/index.html', array('user' => $user, 'disques' => $disques));
 			//STOP
 		}
-		else {
+		else { // alerte affichée si non connecté
 			$msg = new DisplayedMessage();
 			$msg->setContent('Vous devez vous connecter pour avoir accès à cette ressource')
 				->setType('danger')
