@@ -1,13 +1,17 @@
 <div id="content">
   <h4>Mes disques -> {{user}}</h4>
   <a href="MyDisques/frm" class="btn btn-primary" type="button"> <!-- redirige vers la création du disque-->
+  <!-- Twig nous permet de séparer notre code PHP et HTML , et facilite notre code PHP pour ne pas avoir de balises HTML -->
+  <a href="MyDisques/frm" class="btn btn-primary" type="button">
     <span class="glyphicon glyphicon-plus-sign"></span> Créer un disque
   </a>
+  <!-- Création d'une liste , ajout d'un boucle FOR pour afficher chaque disque avec le ce modèle -->
   <ul class="list-group">
     {%for disque in disques%}
       <li class="list-group-item">
         <span class="glyphicon glyphicon-hdd"></span><strong>{{disque.getNom()}}</strong>
         <span class="label label-default">{{disque.occupation}} / {{disque.occupationTotal}}</span>
+
 
         <div class="progress" style="margin-top: 10px;">
           <div
@@ -19,12 +23,15 @@
               style="width: {{disque.getOccupation()}}%; min-width: 3em;">
             {{disque.getOccupation()}}%
           </div>
+          <!-- On creer la barre de progression prenant en parametre l'occupation du disque et son style (attribut progresstyle)-->
+
         </div>
 
         <a href="Scan/show/{{disque.id}}" type="button" class="btn btn-primary btn-block">
           <span class="glyphicon glyphicon-folder-open" style="margin-right: 5px;"></span>
           Ouvrir
         </a>
+        <!-- Création du bouton Ouvrir pour les disques qui appel la fonction show dans le controlleur scan en fonction de l'id du disque affiche -->
       </li>
     {%endfor%}
   </ul>

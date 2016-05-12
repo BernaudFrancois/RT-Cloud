@@ -23,9 +23,10 @@ class Scan extends BaseController {
 	 */
 	public function show($idDisque, $option = false) {
 		if (Auth::isAuth()) { //verifie user connecté
-			$user = Auth::getUser();
+			$user = Auth::getUser(); // Recupération du user (objet)
 			$disk = DAO::getOne('disque', 'id ='. $idDisque .'&& idUtilisateur = '. $user->getId());
-
+			//Recuperation du disque de l'id envoyé par le bouton
+			
 			if($option) {
 				switch($option) {
 					case 'rename':
@@ -55,11 +56,13 @@ class Scan extends BaseController {
 				return false;
 			}
 
-
-			$diskName = $disk->getNom();
+			// Suite TODO 1.2
+			$diskName = $disk->getNom(); //On récupere le nom au disque
 			$occupation = $disk->getOccupation();
+			// On réutilise le même code que dans le controlleur myDisque pour afficher les occupations
 			$disk->occupation = DirectoryUtils::formatBytes($occupation / 100 * $disk->getQuota());
 			$disk->occupationTotal = DirectoryUtils::formatBytes($disk->getQuota());
+			// Réglage des seuils pour la barre de progression pour l'affichage d'un statut d'occupation
 
 			if($occupation <= 100 && $occupation > 80) {
 				$disk->status = 'Proche saturation';
@@ -79,10 +82,17 @@ class Scan extends BaseController {
 			}
 
 			$disk->_services = DAO::getManyToMany($disk, 'services');
+			//requetes pour recuperer tous les services du disque associé
+			
 			$tarif = ModelUtils::getDisqueTarif($disk);
+			//Utilisation de la méthode qui permet de retourner le tarif d'un disque
 
 
 			$this->loadView("scan/vFolder.html", array('user' => $user, 'disk' => $disk, 'diskName' => $diskName, 'tarif' => $tarif));
+			//Chargement de la vue avec comme paramètre l'objet utilisateur, l'objet utilisateur, l'objet disque
+			// et la variable contenant le nom du disque
+			
+			
 			Jquery::executeOn("#ckSelectAll", "click", "$('.toDelete').prop('checked', $(this).prop('checked'));$('#btDelete').toggle($('.toDelete:checked').length>0)");
 			Jquery::executeOn("#btUpload", "click", "$('#tabsMenu a:last').tab('show');");
 			Jquery::doJqueryOn("#btDelete", "click", "#panelConfirmDelete", "show");
