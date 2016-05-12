@@ -47,11 +47,11 @@ class Scan extends BaseController {
 				return false;
 			}
 
-			if(empty($disk)) {
+			if(empty($disk)) { // message si mauvais id de disque
 				$msg = new DisplayedMessage();
 				$msg->setContent('Le disque n\'existe pas ou ne vous appartient pas !')
 					->setType('warning')
-					->setDismissable(true)
+					->setDismissable(true) 
 					->show($this);
 				return false;
 			}
@@ -103,10 +103,10 @@ class Scan extends BaseController {
 			echo Jquery::compile();
 		}
 		else {
-			$msg = new DisplayedMessage();
+			$msg = new DisplayedMessage(); // message si non connecté
 			$msg->setContent('Vous devez vous connecter pour avoir accès à cette ressource')
 					->setType('danger')
-					->setDismissable(false)
+					->setDismissable(false) // message qu'on ne peut pas fermer
 					->show($this);
 			echo Auth::getInfoUser();
 		}
@@ -125,7 +125,7 @@ class Scan extends BaseController {
 
 			$disk = DAO::getOne('disque', 'id = '. $_POST['diskId']); //recuperation du disque
 			$diskTarif = new DisqueTarif(); //creation d'une nouvelle instance de disque
-			$diskTarif->setDisque($disk); // on lui attribut le disque récupéré 
+			$diskTarif->setDisque($disk); // on lui attribue le disque récupéré
 
 			$tarif = DAO::getOne('tarif', 'id = '. $_POST['tarif']); //on récupère le tarif grâce à  son id
 			$diskTarif->setTarif($tarif); //mise à jour du tarif
@@ -133,7 +133,7 @@ class Scan extends BaseController {
 
 			$actual_size = $disk->getOccupation() / 100 * $disk->getTarif()->getQuota() * ModelUtils::sizeConverter($disk->getTarif()->getUnite()); // récupération de la taille actuel en octet
 			$new_size = $tarif->getQuota() * ModelUtils::sizeConverter($tarif->getUnite()); // récupération de la taille du future tarif
-			if($actual_size > $new_size) { // si la capacité occupé du disque est supérieur au nouveau tarif -> refus
+			if($actual_size > $new_size) { // si la capacité occupé du disque est supérieure au nouveau tarif -> refus
 				echo '<div class="alert alert-danger">Vous ne pouvez réduire l\'offre actuelle puisque votre quota est supérieur au nouveau</div>';
 				echo '<a href="Scan/show/'. $_POST['diskId'] .'" class="btn btn-primary btn-block">Revenir au disque</a>'; //lien de retour au disque
 				return false;

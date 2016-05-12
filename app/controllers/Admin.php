@@ -2,7 +2,7 @@
 use micro\orm\DAO;
 class Admin extends \BaseController {
 
-	private function isAdmin() { //fonction privée
+	private function isAdmin() { //fonction privée, non accessible ailleurs
 		if(Auth::isAuth()) { // test connexion
 			if(Auth::isAdmin()) { // test de pouvoir admin
 				return true;
@@ -17,8 +17,8 @@ class Admin extends \BaseController {
 	}
 
 	public function index() {
-		if(!$this->isAdmin()) // appel de la fonction
-			return false;
+		if(!$this->isAdmin()) // appel de la fonction de controle d'accès
+			return false;	// empeche l'execution du reste du code si elle n'est pas validée
 
 		$count = (object)[];
 		$count->all = (object)[];
