@@ -103,8 +103,8 @@ class DirectoryUtils {
 
 	/**
 	 * Formate un nombre $size en octets
-	 * @param nimber $size
-	 * @param number $precision
+	 * @param number $size
+	 * @param int|number $precision
 	 * @return string
 	 */
 	public static function formatBytes($size, $precision = 2){

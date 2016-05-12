@@ -1,0 +1,22 @@
+<h2>Changer la tarification du disque {{disk.nom}}</h2>
+
+<form method="post" action="Scan/changetarif">
+  <div class="form-group hidden">
+    <input type="hidden" name="diskId" value="{{disk.getId()}}" required>
+    <input type="hidden" name="userId" value="{{user.getId()}}" required>
+  </div>
+
+  <div class="form-group">
+    <label for="tarif">Choix du tarif</label>
+    <select name="tarif" id="tarif" class="form-control">
+      {% for tarif in tarifs %}
+        <option value="{{tarif.id}}"{%if tarif.id == selected %} selected {% endif %}>{{tarif.quota}}{{tarif.unite}} pour {{tarif.prix}}€ avec marge de dépassement de {{tarif.margeDepassement * 100}}% (Coût de dépassement {{tarif.coutDepassement}}€/{{tarif.unite}})</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary pull-right">Changer la tarification</button>
+  </div>
+  <div class="clearfix"></div>
+</form>

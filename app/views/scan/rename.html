@@ -1,0 +1,16 @@
+<h2>Renommer le disque {{disk.nom}}</h2>
+
+<form method="post" action="MyDisques/rename">
+  <div class="form-group hidden">
+    <input type="hidden" name="diskId" value="{{disk.getId()}}" required>
+    <input type="hidden" name="userId" value="{{user.getId()}}" required>
+  </div>
+  <div class="form-group">
+    <label for="name">Nouveau nom</label>
+    <input class="form-control" type="text" name="name" id="name" required>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary pull-right">Renommer le disque</button>
+  </div>
+  <div class="clearfix"></div>
+</form>

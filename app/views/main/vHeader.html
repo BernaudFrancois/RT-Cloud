@@ -56,6 +56,17 @@
 		<div class="panel panel-default">
 		<div class="panel-body">
 		<ol class="breadcrumb">
-			<li><a href="{{config["siteUrl"]}}"><span class="glyphicon glyphicon-home"
-					aria-hidden="true"></span>&nbsp;Accueil</a></li>
+			<li>
+				<a href="{{config["siteUrl"]}}">
+					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;
+					Accueil
+				</a>
+			</li>
+			{% for name, link in fil %}
+			<li>
+				<a href="{{link}}">
+					{{name}}
+				</a>
+			</li>
+			{% endfor %}
 		</ol>

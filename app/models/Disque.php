@@ -24,7 +24,7 @@ class Disque extends Base{
 	 * @JoinTable(name="disque_service")
 	 */
 	private $services;
-	
+
 	public function getId() {
 		return $this->id;
 	}
@@ -52,6 +52,11 @@ class Disque extends Base{
 		return $this;
 	}
 
+	public function addTarif($disqueTarif) {
+		$this->disqueTarifs[] = $disqueTarif;
+		return $this;
+	}
+
 	public function getTarifs() {
 		return $this->tarifs;
 	}
@@ -71,6 +76,15 @@ class Disque extends Base{
 
 	public function getDisqueTarifs() {
 		return $this->disqueTarifs;
+	}
+
+	public function setServices($services) {
+		$this->services=$services;
+		return $this;
+	}
+
+	public function getServices() {
+		return $this->services;
 	}
 
 	public function getCreatedAt() {
@@ -108,12 +122,6 @@ class Disque extends Base{
 		return $this;
 	}
 
-	public function getServices() {
-		return $this->services;
-	}
 
-	public function setServices($services) {
-		$this->services=$services;
-		return $this;
-	}
+
 }

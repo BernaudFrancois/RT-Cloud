@@ -7,6 +7,46 @@
 		</ul>
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="Home">
+				<div class="panel panel-default">
+					<div class="panel-heading">Caractéristiques du disque</div>
+
+					<ul class="list-group">
+						<li class="list-group-item">
+							<strong>Nom</strong>: {{diskName}}
+							<a href="Scan/show/{{disk.getId()}}/rename" class="btn btn-default">
+								<span class="glyphicon glyphicon-edit"></span>
+								Modifier
+							</a>
+						</li>
+						<li class="list-group-item">
+							<strong>Propriétaire</strong>: {{user.getLogin()}}
+						</li>
+						<li class="list-group-item">
+							<h4>Occupation</h4>
+							<p>{{disk.occupation}} ({{disk.getOccupation()}}%) sur {{disk.occupationTotal}}</p>
+							<span class="label label-{{disk.style}}">{{disk.status}}</span>
+						</li>
+						<li class="list-group-item">
+							<h4>Tarification</h4>
+							<p>{{tarif}}</p>
+							<a href="Scan/show/{{disk.getId()}}/changeTarif" class="btn btn-default">
+								<span class="glyphicon glyphicon-edit"></span>
+								Modifier la tarification...
+							</a>
+						</li>
+						<li class="list-group-item">
+							<h4>Services</h4>
+							{% for service in disk._services %}
+								<span class="label label-info">{{service.getNom()}}</span>
+							{%endfor%}
+						</li>
+					</ul>
+				</div>
+
+				<a href="MyDisques/index" class="btn btn-primary btn-block">
+					<span class="glyphicon glyphicon-folder-close"></span>
+					Fermer et retourner à <strong>Mes disques</strong>
+				</a>
 				<!--
 				//TODO 4.3 implémenter à partir de DisqueController/indexAction
 				-->

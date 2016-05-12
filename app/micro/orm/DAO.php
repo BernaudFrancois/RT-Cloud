@@ -99,6 +99,7 @@ class DAO {
 	 * @param Classe $instance
 	 * @param string $member Membre sur lequel doit être présent une annotation OneToMany
 	 * @param array $array paramètre facultatif contenant la liste des fils possibles
+	 * @return array|multitype
 	 */
 	public static function getOneToMany($instance,$member,$array=null){
 		$ret=array();
@@ -138,12 +139,14 @@ class DAO {
 		Logger::log("ManyToMany", "Exécution de ".$sql);
 		return DAO::$db->query($sql);
 	}
+
 	/**
 	 * Affecte/charge les enregistrements fils dans le membre $member de $instance.
 	 * Si $array est null, les fils sont chargés depuis la base de données
 	 * @param Classe $instance
 	 * @param string $member Membre sur lequel doit être présent une annotation OneToMany
 	 * @param array $array paramètre facultatif contenant la liste des fils possibles
+	 * @return array
 	 */
 	public static function getManyToMany($instance,$member,$array=null){
 		$ret=array();
@@ -197,13 +200,15 @@ class DAO {
 		}
 		return $ret;
 	}
+
 	/**
 	 * Retourne un tableau d'objets de $className depuis la base de données
 	 * @param string $className nom de la classe du model à charger
 	 * @param string $condition Partie suivant le WHERE d'une instruction SQL
-	 * @return multitype:$className
+	 * @param bool $loadManyToOne
+	 * @return multitype :$className
 	 */
-	public static function getAll($className,$condition='',$loadManyToOne=true){
+	public static function getAll($className, $condition = '', $loadManyToOne = true){
 		$objects=array();
 		$membersManyToOne=Reflexion::getMembersWithAnnotation($className, "ManyToOne");
 		$tableName=OrmUtils::getTableName($className);
@@ -247,8 +252,10 @@ class DAO {
 	 * Retourne une instance de $className depuis la base de données, à  partir des valeurs $keyValues de la clé primaire
 	 * @param String $className nom de la classe du model à charger
 	 * @param Array|string $keyValues valeurs des clés primaires ou condition
+	 * @param bool $loadManyToOne
+	 * @return multitype|null
 	 */
-	public static function getOne($className,$keyValues,$loadManyToOne=true){
+	public static function getOne($className, $keyValues, $loadManyToOne = true){
 		if(!is_array($keyValues)){
 			if(strrpos($keyValues,"=")===false){
 				$keyValues="`".OrmUtils::getFirstKey($className)."`='".$keyValues."'";
@@ -287,7 +294,8 @@ class DAO {
 	/**
 	 * Insère $instance dans la base de données
 	 * @param Classe $instance instance à insérer
-	 * @param $insertMany si vrai, sauvegarde des instances reliées à $instance par un ManyToMany
+	 * @param bool|si $insertMany si vrai, sauvegarde des instances reliées à $instance par un ManyToMany
+	 * @return
 	 */
 	public static function insert($instance,$insertMany=false){
 		$tableName=OrmUtils::getTableName(get_class($instance));
@@ -358,11 +366,13 @@ class DAO {
 			}
 		}
 	}
+
 	/**
 	 * Met à jour $instance dans la base de données.
 	 * Attention de ne pas modifier la clé primaire
 	 * @param Classe $instance instance à modifier
-	 * @param $updateMany Ajoute ou met à jour les membres ManyToMany
+	 * @param bool|Ajoute $updateMany Ajoute ou met à jour les membres ManyToMany
+	 * @return
 	 */
 	public static function update($instance,$updateMany=false){
 		$tableName=OrmUtils::getTableName(get_class($instance));

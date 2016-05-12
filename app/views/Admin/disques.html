@@ -1,0 +1,54 @@
+<div class="well well-lg">
+  <h2>Disques</h2>
+
+  {% for user in users %}
+    <h4>{{user.mail}}-{{user.login}} ({{user.status}})</h4>
+
+  <ul class="list-group">
+    {% for disk in user.disks %}
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-md-4">
+            {{disk.nom}}
+          </div>
+          <div class="col-md-3">
+            {{disk.tarif}}
+          </div>
+          <div class="col-md-3">
+            <div class="progress">
+              <div
+                  class="progress-bar progress-bar-info progress-bar-striped"
+                  role="progressbar"
+                  aria-valuenow="{{disk.getOccupation()}}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  {% if disk.getOccupation() != 0 %}
+                    style="width: {{disk.getOccupation()}}%; min-width: 3em;"
+                  {% endif %}
+              >
+                {{disk.getOccupation()}}%
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary">
+              <span class="glyphicon glyphicon-search"></span>
+              Ouvrir
+            </button>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+
+  <div class="row">
+    <div class="col-md-3">
+      <a class="btn btn-primary btn-block" href="Admin/">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        Retour
+      </a>
+    </div>
+  </div>
+</div>

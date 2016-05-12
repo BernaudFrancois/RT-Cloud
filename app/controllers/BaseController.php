@@ -8,9 +8,16 @@ use micro\utils\RequestUtils;
  * @package cloud.controllers
  */
 abstract class BaseController extends Controller {
+
+	protected $fil = [];
+
+	public function __construct() {
+		$this->fil = [get_called_class() => get_called_class() .'/'];
+	}
+
 	public function initialize(){
 		if(!RequestUtils::isAjax()){
-			$this->loadView("main/vHeader.html",array("infoUser"=>Auth::getInfoUser()));
+			$this->loadView("main/vHeader.html", array("infoUser"=>Auth::getInfoUser(), 'fil' => $this->fil));
 		}
 	}
 

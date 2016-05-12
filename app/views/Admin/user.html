@@ -1,0 +1,44 @@
+<h2>Utilisateurs</h2>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Utilisateurs</th>
+    <th>Disques</th>
+    <th>Montant</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody class="table-striped">
+  {% for user in users%}
+    <tr>
+      <td>{{user.login}}</td>
+      <td>
+        {% if user.countDisk %}
+          <span class="label label-primary">{{user.countDisk}} {% if user.countDisk == 1 %} disque {% else %} disques {% endif %}</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if user.diskTarif %}
+          <span class="label label-info">{{user.diskTarif}} €</span>
+        {% endif %}
+      </td>
+      <td>
+        <button class="btn btn-primary pull-right">
+          <span class="glyphicon glyphicon-search"></span>
+          Ouvrir
+        </button>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-md-3">
+    <a class="btn btn-primary btn-block" href="Admin/">
+      <span class="glyphicon glyphicon-arrow-left"></span>
+      Retour
+    </a>
+  </div>
+</div>

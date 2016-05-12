@@ -43,8 +43,8 @@ abstract class Controller {
 	 * @param mixed $pData variable ou tableau associatif à passer à la vue<br>Si une variable est passée, elle aura pour nom <b>$data</b> dans la vue,<br>
 	 * Si un tableau associatif est passé, la vue récupère des variables du nom des clés du tableau
 	 * @param boolean $asString Si vrai, la vue n'est pas affichée mais retournée sous forme de chaîne (utilisable dans une variable)
-	 * @throws Exception
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function loadView($viewName,$pData="",$asString=false){
 		$config=$GLOBALS["config"];

@@ -1,0 +1,78 @@
+<h2>Administration</h2>
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="glyphicon glyphicon-user"></span>
+    <h4 style="display: inline-block;">Utilisateurs</h4>
+    {% if count.today.user %}
+      <span class="label label-info">{{count.today.user}} {% if count.today.user == 1 %} nouveau {% else %} nouveaux {% endif %}</span>
+    {% endif %}
+
+    <div class="btn-group-md pull-right">
+      <a class="btn btn-primary" href="Admin/users">
+        <span class="glyphicon glyphicon-search"></span>
+        Ouvrir
+        <span class="badge">{{count.all.user}}</span>
+      </a>
+      <button class="btn btn-default">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Nouveau...
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </li>
+  <li class="list-group-item">
+    <span class="glyphicon glyphicon-folder-close"></span>
+    <h4 style="display: inline-block;">Disques</h4>
+    {% if count.today.disk %}
+    <span class="label label-info">{{count.today.disk}} {% if count.today.disk == 1 %} nouveau {% else %} nouveaux {% endif %}</span>
+    {% endif %}
+
+    <div class="btn-group-md pull-right">
+      <a class="btn btn-primary" href="Admin/disques">
+        <span class="glyphicon glyphicon-search"></span>
+        Ouvrir
+        <span class="badge">{{count.all.disk}}</span>
+      </a>
+      <button class="btn btn-default">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Nouveau...
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </li>
+  <li class="list-group-item">
+    <span class="glyphicon glyphicon-euro"></span>
+    <h4 style="display: inline-block;">Tarifs</h4>
+
+    <div class="btn-group-md pull-right">
+      <button class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span>
+        Ouvrir
+        <span class="badge">{{count.all.tarif}}</span>
+      </button>
+      <button class="btn btn-default">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Nouveau...
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </li>
+  <li class="list-group-item">
+    <span class="glyphicon glyphicon-gift"></span>
+    <h4 style="display: inline-block;">Services</h4>
+
+    <div class="btn-group-md pull-right">
+      <button class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span>
+        Ouvrir
+        <span class="badge">{{count.all.service}}</span>
+      </button>
+      <button class="btn btn-default">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        Nouveau...
+      </button>
+    </div>
+    <div class="clearfix"></div>
+  </li>
+</ul>

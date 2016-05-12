@@ -11,11 +11,11 @@ class DisplayedMessage {
 	private $timerInterval;
 	private $dismissable;
 
-	public function DisplayedMessage($content,$type="success",$timerInterval=0,$dismissable=true){
-		$this->content=$content;
-		$this->type=$type;
-		$this->dismissable=$dismissable;
-		$this->timerInterval=$timerInterval;
+	public function DisplayedMessage($content = '', $type = 'success', $timerInterval = 0, $dismissable = true){
+		$this->content = $content;
+		$this->type = $type;
+		$this->dismissable = $dismissable;
+		$this->timerInterval = $timerInterval;
 	}
 
 	public function getContent() {
@@ -23,7 +23,7 @@ class DisplayedMessage {
 	}
 
 	public function setContent($content) {
-		$this->content=$content;
+		$this->content = $content;
 		return $this;
 	}
 
@@ -52,6 +52,16 @@ class DisplayedMessage {
 	public function setDismissable($dismissable) {
 		$this->dismissable=$dismissable;
 		return $this;
+	}
+
+	public function show($controller) {
+		$controller->loadView("main/vInfo", [
+				'message' => $this->content,
+				'type' => $this->type,
+				'dismissable' => $this->dismissable,
+				'timerInterval' => $this->timerInterval,
+				'visible' => true
+		]);
 	}
 
 }
