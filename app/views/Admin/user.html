@@ -9,6 +9,7 @@
     <th></th>
   </tr>
   </thead>
+  <!-- On créer un tableau a 3 colonnes -->
   <tbody class="table-striped">
   {% for user in users%}
     <tr>
@@ -17,11 +18,13 @@
         {% if user.countDisk %}
           <span class="label label-primary">{{user.countDisk}} {% if user.countDisk == 1 %} disque {% else %} disques {% endif %}</span>
         {% endif %}
+        <!-- On compte le nombre de disque pour le user -->
       </td>
       <td>
         {% if user.diskTarif %}
           <span class="label label-info">{{user.diskTarif}} €</span>
         {% endif %}
+        <!-- le montant -->
       </td>
       <td>
         <button class="btn btn-primary pull-right">
@@ -40,5 +43,6 @@
       <span class="glyphicon glyphicon-arrow-left"></span>
       Retour
     </a>
+    <!-- Création du bouton retour -->
   </div>
 </div>
